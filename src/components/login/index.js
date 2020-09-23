@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { register } from "../../store/actions";
+import { register, login } from "../../store/actions";
 import { connect } from "react-redux";
 
 class Login extends Component {
@@ -43,10 +43,15 @@ class Login extends Component {
         .then(({ payload }) => this.handleRedirection(payload));
     } else {
       console.log(formData);
+      this.props
+        .dispatch(login(formData))
+        .then(({ payload }) => this.handleRedirection(payload));
     }
   };
 
-  handleRedirection = (result) => {};
+  handleRedirection = (result) => {
+    return this.props.history.push("/dashboard");
+  };
 
   render() {
     let { register, name, lastname, email, password, loading } = this.state;

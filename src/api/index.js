@@ -28,3 +28,19 @@ export const registerUser = async ({ email, password, name, lastname }) => {
     return err.message;
   }
 };
+
+export const loginUser = ({ email, password }) =>
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then((res) => {
+      return usersCollection
+        .doc(res.user.uid)
+        .get()
+        .then((snapshot) => {
+          return { isAuth: true, user: snapshot.data() };
+        });
+    })
+    .catch((error) => {
+      return { error: error.message };
+    });
