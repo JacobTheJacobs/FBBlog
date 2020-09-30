@@ -5,21 +5,47 @@ import Footer from "./components/Footer";
 import Home from "./components/home";
 import Contact from "./components/contact";
 import Login from "./components/login";
+import ToastsComponent from "./utils/toasts";
+import { connect } from "react-redux";
+import { autoSignIn, logout } from "./store/actions/index";
+import Dashboard from "./components/dashboard/index";
+import AuthHOC from "./components/HOC/authHOC";
+import Reviews from "./components/dashboard/reviews";
+import Profile from "./components/dashboard/profile";
 
 class Routes extends Component {
+  componentDidMount() {
+    this.props.dispatch(autoSignIn());
+  }
+
+  handleLogout = () => {
+    this.props.dispatch(logout());
+  };
+
+  app = (auth) => (
+    <BrowserRouter>
+      <Header auth={auth} logout={this.handleLogout} />
+      <Switch>
+        <Route path="/dashboard/profile" component={AuthHOC(Profile)} />
+        <Route path="/reviews" component={AuthHOC(Reviews)} />
+        <Route path="/dashboard" component={AuthHOC(Dashboard)} />
+        <Route path="/login" component={Login} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/" component={Home} />
+      </Switch>
+      <Footer />
+      <ToastsComponent />
+    </BrowserRouter>
+  );
+
   render() {
-    return (
-      <BrowserRouter>
-        <Header />
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/contact" component={Contact} />
-          <Route path="/" component={Home} />
-        </Switch>
-        <Footer />
-      </BrowserRouter>
-    );
+    const { auth } = this.props;
+    return auth.checkingAuth ? this.app(auth) : "...loading";
   }
 }
 
-export default Routes;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(Routes);

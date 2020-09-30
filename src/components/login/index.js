@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { register, login } from "../../store/actions";
 import { connect } from "react-redux";
+import { toast } from "react-toastify";
+import loginHoc from "../HOC/loginHoc";
 
 class Login extends Component {
   state = {
@@ -50,7 +52,14 @@ class Login extends Component {
   };
 
   handleRedirection = (result) => {
-    return this.props.history.push("/dashboard");
+    if (result.error) {
+      this.setState({ loading: false });
+      toast.error(result.error, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } else {
+      return this.props.history.push("/dashboard");
+    }
   };
 
   render() {
@@ -127,8 +136,4 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps)(Login);
+export default loginHoc(Login);

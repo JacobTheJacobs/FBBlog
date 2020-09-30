@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Header = () => {
+const Header = (props) => {
+  const { isAuth } = props.auth;
   return (
     <div>
       <header>
@@ -16,9 +17,20 @@ const Header = () => {
             <Link className="mt-4" to="/contact">
               Contact
             </Link>
-            <Link className="mt-4" to="/login">
-              Login
-            </Link>
+            {isAuth ? (
+              <>
+                <Link className="mt-4 header_btn" to="/dashboard">
+                  Dashboard
+                </Link>
+                <div onClick={props.logout} className="mt-4 header_btn">
+                  Logout
+                </div>
+              </>
+            ) : (
+              <Link className="mt-4" to="/login">
+                Login
+              </Link>
+            )}
           </div>
         </nav>
       </header>

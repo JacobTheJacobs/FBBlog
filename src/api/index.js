@@ -3,6 +3,8 @@ import "firebase/auth";
 
 import { usersCollection } from "../utils/firebase";
 
+//Register USER
+//***** */
 export const registerUser = async ({ email, password, name, lastname }) => {
   try {
     //create user for auth
@@ -28,7 +30,8 @@ export const registerUser = async ({ email, password, name, lastname }) => {
     return err.message;
   }
 };
-
+//LOGIN
+//***** */
 export const loginUser = ({ email, password }) =>
   firebase
     .auth()
@@ -44,3 +47,25 @@ export const loginUser = ({ email, password }) =>
     .catch((error) => {
       return { error: error.message };
     });
+
+//CHECK AUTH
+//***** */
+export const autoSignInUser = () =>
+  new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        usersCollection
+          .doc(user.uid)
+          .get()
+          .then((snapshot) => {
+            resolve({ isAuth: true, user: snapshot.data() });
+          });
+      } else {
+        resolve({ isAuth: false, user: null });
+      }
+    });
+  });
+
+export const logoutUser = () => {
+  firebase.auth().signOut();
+};
