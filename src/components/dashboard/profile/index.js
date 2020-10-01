@@ -3,6 +3,8 @@ import Layout from "../../../utils/layout";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import LoginPopUp from "../../../utils/loginPopUp";
+import { updateProfile } from "../../../store/actions/index";
+import { toast } from "react-toastify";
 
 const Profile = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -25,10 +27,15 @@ const Profile = (props) => {
   const submitForm = (data) => {
     const isEmailChanged = auth.user.email === data.email ? false : true;
     setDisabled(true);
-    setShowModal({ open: false, formData: "" 
-    
+    setShowModal({ open: false, formData: "" });
 
-});
+    dispatch(
+      updateProfile({ uid: auth.user.uid, ...data }, isEmailChanged)
+    ).then(() => {
+      toast.success("Congrats Youre profile has been updated", {
+        position: toast.POSITION.BOTTOM_CENTER,
+      });
+    });
   };
 
   return (

@@ -1,8 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 
-import { usersCollection } from "../utils/firebase";
-
+import { usersCollection, postsCollection } from "../utils/firebase";
+const serverTimeStamp = firebase.firestore.FieldValue.serverTimestamp;
 //Register USER
 //***** */
 export const registerUser = async ({ email, password, name, lastname }) => {
@@ -69,3 +69,38 @@ export const autoSignInUser = () =>
 export const logoutUser = () => {
   firebase.auth().signOut();
 };
+
+export const updateProfileUser = (formData, isEmailChanged) => {
+  const collection = usersCollection.doc(formData.uid);
+  const updateDocument = () =>
+    collection
+      .update(formData)
+      .then(() =>
+        collection
+          .get()
+          .then((snapshot) => ({ isAuth: true, user: snapshot.data() }))
+      );
+  if (isEmailChanged) {
+    let getUser = firebase.auth().currentUser;
+    getUser.updateEmail(formData.email);
+    return updateDocument();
+  } else {
+    return updateDocument();
+  }
+};
+
+export const addPostUser = (data, user) =>
+  postsCollection
+    .add({
+      ...data,
+      createdAt: serverTimeStamp(),
+      rating: parseInt(data.rating),
+      public: parseInt(data.public),
+      ownerData: {
+        ownedId: user.uid,
+        name: `${user.name} ${user.lastname}`,
+      },
+    })
+    .then((docRef) => {
+      return docRef.id;
+    });

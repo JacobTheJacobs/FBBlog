@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
+import AddEditPost from "./add_edit";
 
 const Reviews = (props) => {
-    return (
-        <div>
-            
-        </div>
-    );
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
 export default Reviews;

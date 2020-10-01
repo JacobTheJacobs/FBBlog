@@ -75,7 +75,7 @@ class Login extends Component {
               <input
                 type="text"
                 id="name"
-                name={name}
+                name="name"
                 className="form-control mb-3"
                 placeholder="Your name"
                 value={name}

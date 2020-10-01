@@ -12,6 +12,7 @@ import Dashboard from "./components/dashboard/index";
 import AuthHOC from "./components/HOC/authHOC";
 import Reviews from "./components/dashboard/reviews";
 import Profile from "./components/dashboard/profile";
+import AddEditPost from "./components/dashboard/reviews/add_edit";
 
 class Routes extends Component {
   componentDidMount() {
@@ -26,8 +27,9 @@ class Routes extends Component {
     <BrowserRouter>
       <Header auth={auth} logout={this.handleLogout} />
       <Switch>
+        <Route path="/dashboard/posts/add" component={AuthHOC(AddEditPost)} />
         <Route path="/dashboard/profile" component={AuthHOC(Profile)} />
-        <Route path="/reviews" component={AuthHOC(Reviews)} />
+        <Route path="/dashboard/posts" component={AuthHOC(Reviews, true)} />
         <Route path="/dashboard" component={AuthHOC(Dashboard)} />
         <Route path="/login" component={Login} />
         <Route path="/contact" component={Contact} />
