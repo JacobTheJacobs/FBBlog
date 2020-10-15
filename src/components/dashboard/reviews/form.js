@@ -5,8 +5,10 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { addPost } from "../../../store/actions/index";
+import { addPost, clearPost } from "../../../store/actions/index";
 import { toast } from "react-toastify";
+import Uploader from "./uploader";
+
 class PostForm extends Component {
   state = {
     editor: "",
@@ -18,12 +20,21 @@ class PostForm extends Component {
       rating: "",
       public: "",
     },
+    img: "https://via.placeholder.com/400",
+    imageName: "",
+    imageError: "",
   };
+
+  componentWillUnmount() {
+    this.props.dispatch(clearPost);
+  }
 
   handleResetForm = (resetForm) => {
     resetForm({});
     this.setState({
       editor: "",
+      img: "https://via.placeholder.com/400",
+      imageError: false,
       disable: false,
     });
     toast.success("Yeah youre post were saved", {
@@ -32,10 +43,21 @@ class PostForm extends Component {
   };
 
   handleSubmit = (values, resetForm) => {
-    let formData = { ...values, content: this.state.editor };
+    let formData = {
+      ...values,
+      content: this.state.editor,
+      img: this.state.imageName,
+    };
 
     this.props.dispatch(addPost(formData, this.props.auth.user)).then(() => {
       this.handleResetForm(resetForm);
+    });
+  };
+
+  handleImageName = (name, download) => {
+    this.setState({
+      img: download,
+      imageName: name,
     });
   };
 
@@ -54,6 +76,11 @@ class PostForm extends Component {
         onSubmit={(values, { resetForm }) => {
           if (Object.entries(state.editor).length === 0) {
             return this.setState({ editorError: false });
+          } else if (state.imageName === "") {
+            return this.setState({
+              imageError: true,
+              editorError: false,
+            });
           } else {
             this.setState({
               editorError: false,
@@ -156,8 +183,13 @@ class PostForm extends Component {
                 </Button>
               </Col>
               <Col>
-                UPLOADER
-                <div className="error">Add an image please</div>
+                <Uploader
+                  img={this.state.img}
+                  handleImageName={this.handleImageName}
+                />
+                {state.imageError ? (
+                  <div className="error">Add image please </div>
+                ) : null}
               </Col>
             </Form.Row>
           </Form>

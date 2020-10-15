@@ -1,4 +1,10 @@
-import { AUTH_USER, LOGOUT_USER, ADD_POST } from "../types";
+import {
+  AUTH_USER,
+  LOGOUT_USER,
+  ADD_POST,
+  CLEAR_POST,
+  GET_REVIEWS,
+} from "../types";
 import {
   registerUser,
   loginUser,
@@ -6,6 +12,7 @@ import {
   logoutUser,
   updateProfileUser,
   addPostUser,
+  getPostsUser,
 } from "../../api/index";
 
 //=======AUTH
@@ -39,4 +46,14 @@ export const updateProfile = (formData, isEmailChanged) => ({
 export const addPost = (data, user) => ({
   type: ADD_POST,
   payload: addPostUser(data, user),
+});
+
+export const clearPost = () => ({
+  type: CLEAR_POST,
+  payload: null,
+});
+
+export const getReviews = (limit) => ({
+  type: GET_REVIEWS,
+  payload: getPostsUser(limit),
 });

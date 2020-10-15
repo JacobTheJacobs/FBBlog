@@ -104,3 +104,18 @@ export const addPostUser = (data, user) =>
     .then((docRef) => {
       return docRef.id;
     });
+
+export const getPostsUser = (limit) => {
+  postsCollection
+    .orderBy("createdAt")
+    .limit(limit)
+    .get()
+    .then((snapshot) => {
+      const lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      const reviews = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      return { posts: reviews, lastVisible: lastVisible };
+    });
+};
