@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/storage"
 
 import { usersCollection, postsCollection } from "../utils/firebase";
 const serverTimeStamp = firebase.firestore.FieldValue.serverTimestamp;
@@ -147,3 +148,18 @@ export const loadMoreReviewsUser = (limit, reviews) => {
 
 }
 
+export const getReviewByIdUser =async(id) =>{
+  try{
+    const snapshot = await postsCollection.doc(id).get();
+    const data = snapshot.data();
+
+    const url = await firebase.storage().ref(`posts/${data.img}`).getDownloadURL()
+   
+   console.log(url,data);
+   console.log(snapshot);
+    return {...data, getDownloadURL:url}
+
+  }catch(error){
+    return null
+  }
+}

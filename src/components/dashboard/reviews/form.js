@@ -5,12 +5,13 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { addPost, clearPost } from "../../../store/actions/index";
+import { addPost, clearPost,getReviewById } from "../../../store/actions/index";
 import { toast } from "react-toastify";
 import Uploader from "./uploader";
 
 class PostForm extends Component {
   state = {
+    mode:'add',
     editor: "",
     editorError: false,
     disable: false,
@@ -27,6 +28,31 @@ class PostForm extends Component {
 
   componentWillUnmount() {
     this.props.dispatch(clearPost());
+  }
+
+  componentDidMount(){
+    const id = this.props.id
+    if(id){
+      this.props.dispatch(getReviewById(id)).then(()=>{
+        const reviewById = this.props.reviews.reviewById
+        this.setState({
+          mode:'edit',
+          editor: reviewById.content,
+          img: reviewById.downloadUrl,
+          imgName: reviewById.img,
+          initialValues: {
+            title: reviewById.title,
+            excerpt: reviewById.excerpt,
+            rating: reviewById.rating,
+            public: reviewById.public,
+          },
+        })
+      }).catch((e)=>{
+        this.props.history.push('/dashboard/posts')
+        toast.error('Sorry, the posts does not exists')
+        console.log(e);
+      })
+    }
   }
 
   handleResetForm = (resetForm) => {

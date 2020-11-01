@@ -4,6 +4,7 @@ import {
   ADD_POST,
   CLEAR_POST,
   GET_REVIEWS,
+  GET_REVIEW_BY_ID,
 } from "../types";
 import {
   registerUser,
@@ -14,6 +15,7 @@ import {
   addPostUser,
   getPostsUser,
   loadMoreReviewsUser,
+  getReviewByIdUser,
 } from "../../api/index";
 
 //=======AUTH
@@ -63,3 +65,8 @@ export const loadMoreReviews = (limit, reviews) => ({
   type: GET_REVIEWS,
   payload: loadMoreReviewsUser(limit, reviews),
 });
+
+export const getReviewById = (id) => ({
+  type:GET_REVIEW_BY_ID,
+  payload:getReviewByIdUser(id)
+})

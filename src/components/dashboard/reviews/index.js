@@ -13,7 +13,7 @@ const Reviews = (props) => {
     if(!reviews.adminReviews){
       dispatch(getReviews(2))
     }
- 
+    dispatch(getReviews(2));
   }, [dispatch]);
 
   const renderPosts = () =>
