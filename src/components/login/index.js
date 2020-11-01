@@ -6,9 +6,9 @@ import loginHoc from "../HOC/loginHoc";
 
 class Login extends Component {
   state = {
-    name: "demo",
-    lastname: "demo",
-    email: "demo@demo.com",
+    name: "demo2",
+    lastname: "demo2",
+    email: "demo2@demo.com",
     password: "demodemo",
 
     register: false,

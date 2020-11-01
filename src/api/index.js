@@ -105,7 +105,7 @@ export const addPostUser = (data, user) =>
       return docRef.id;
     });
 
-export const getPostsUser = (limit) => {
+export const getPostsUser = (limit) => 
   postsCollection
     .orderBy("createdAt")
     .limit(limit)
@@ -116,6 +116,34 @@ export const getPostsUser = (limit) => {
         id: doc.id,
         ...doc.data(),
       }));
+      console.log(reviews);
+
       return { posts: reviews, lastVisible: lastVisible };
     });
-};
+   
+
+export const loadMoreReviewsUser = (limit, reviews) => {
+  let posts = [...reviews.posts];
+  let lastVisible = reviews.lastVisible;
+
+  if(lastVisible){
+    return postsCollection  
+    .orderBy("createdAt")
+    //last post
+    .startAfter(lastVisible)
+    .limit(limit)
+    .get()
+    .then( snapshot => {
+      const lastVisible = snapshot.docs[snapshot.docs.length-1];
+      const newReviews =snapshot.docs.map(doc =>({
+        id:doc.id, ...doc.data()
+      }))
+      return { posts: [...posts, ...newReviews], lastVisible: lastVisible };
+    })
+  }else{
+    console.log('no more posts')
+    return {posts,lastVisible}
+  }
+
+}
+

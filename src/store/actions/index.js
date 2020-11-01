@@ -13,6 +13,7 @@ import {
   updateProfileUser,
   addPostUser,
   getPostsUser,
+  loadMoreReviewsUser,
 } from "../../api/index";
 
 //=======AUTH
@@ -56,4 +57,9 @@ export const clearPost = () => ({
 export const getReviews = (limit) => ({
   type: GET_REVIEWS,
   payload: getPostsUser(limit),
+});
+
+export const loadMoreReviews = (limit, reviews) => ({
+  type: GET_REVIEWS,
+  payload: loadMoreReviewsUser(limit, reviews),
 });

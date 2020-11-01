@@ -27,7 +27,8 @@ class Routes extends Component {
     <BrowserRouter>
       <Header auth={auth} logout={this.handleLogout} />
       <Switch>
-        <Route path="/dashboard/posts/add" component={AuthHOC(AddEditPost)} />
+      <Route path="/dashboard/posts/edit/:id" component={AuthHOC(AddEditPost,true)} />
+        <Route path="/dashboard/posts/add" component={AuthHOC(AddEditPost,true)} />
         <Route path="/dashboard/profile" component={AuthHOC(Profile)} />
         <Route path="/dashboard/posts" component={AuthHOC(Reviews, true)} />
         <Route path="/dashboard" component={AuthHOC(Dashboard)} />

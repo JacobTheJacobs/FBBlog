@@ -26,7 +26,7 @@ class PostForm extends Component {
   };
 
   componentWillUnmount() {
-    this.props.dispatch(clearPost);
+    this.props.dispatch(clearPost());
   }
 
   handleResetForm = (resetForm) => {

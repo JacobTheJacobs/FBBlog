@@ -2,15 +2,19 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Layout from "../../../utils/layout";
 import { Link } from "react-router-dom";
-import { getReviews } from "../../../store/actions";
+import { getReviews, loadMoreReviews } from "../../../store/actions";
 
 const Reviews = (props) => {
   const reviews = useSelector((state) => state.reviews);
-  const dipspatch = useDispatch();
+  const dispatch = useDispatch();
+ 
 
   useEffect(() => {
-    dipspatch(getReviews(2));
-  }, [dipspatch]);
+    if(!reviews.adminReviews){
+      dispatch(getReviews(2))
+    }
+ 
+  }, [dispatch]);
 
   const renderPosts = () =>
     reviews.adminReviews
@@ -33,8 +37,9 @@ const Reviews = (props) => {
         ))
       : null;
 
-  const loadmore = () => {
-    dipspatch(loadmoreReviews(1,reviews.adminReviews));
+  const loadMore = () => {
+    dispatch(loadMoreReviews(1, reviews.adminReviews));
+    console.log(reviews);
   };
   return (
     <Layout auth={props.auth} title="Posts">
@@ -59,7 +64,7 @@ const Reviews = (props) => {
         </table>
       </div>
 
-      <div className="btn btn-primary" onClick={loadmore}>
+      <div className="btn btn-primary" onClick={loadMore}>
         Get more
       </div>
     </Layout>
