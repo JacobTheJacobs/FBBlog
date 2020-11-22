@@ -149,15 +149,15 @@ export const loadMoreReviewsUser = (limit, reviews) => {
 }
 
 export const getReviewByIdUser =async(id) =>{
+
   try{
+    
     const snapshot = await postsCollection.doc(id).get();
     const data = snapshot.data();
 
-    const url = await firebase.storage().ref(`posts/${data.img}`).getDownloadURL()
-   
-   console.log(url,data);
-   console.log(snapshot);
-    return {...data, getDownloadURL:url}
+ //   const url = await firebase.storage().ref(`posts/${data.img}`).getDownloadURL()
+
+    return {...data/*, getDownloadURL:url*/}
 
   }catch(error){
     return null
