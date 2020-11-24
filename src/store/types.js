@@ -4,3 +4,4 @@ export const ADD_POST = "ADD_POST";
 export const CLEAR_POST = "CLEAR_POST";
 export const GET_REVIEWS = "GET_REVIEWS";
 export const GET_REVIEW_BY_ID = "GET_REVIEW_BY_ID"
+export const FETCH_POSTS = "FETCH_POSTS";

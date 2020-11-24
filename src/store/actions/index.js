@@ -5,6 +5,7 @@ import {
   CLEAR_POST,
   GET_REVIEWS,
   GET_REVIEW_BY_ID,
+  FETCH_POSTS,
 } from "../types";
 import {
   registerUser,
@@ -16,6 +17,8 @@ import {
   getPostsUser,
   loadMoreReviewsUser,
   getReviewByIdUser,
+  editReviewUser,
+  getFetchedPostsUser
 } from "../../api/index";
 
 //=======AUTH
@@ -45,6 +48,12 @@ export const updateProfile = (formData, isEmailChanged) => ({
 });
 
 //=======POSTs
+export const fetchPosts =(id,condition)=>({
+  type:FETCH_POSTS,
+  payload:getFetchedPostsUser(id,condition)
+
+})
+
 
 export const addPost = (data, user) => ({
   type: ADD_POST,
@@ -69,4 +78,9 @@ export const loadMoreReviews = (limit, reviews) => ({
 export const getReviewById = (id) => ({
   type:GET_REVIEW_BY_ID,
   payload:getReviewByIdUser(id)
+})
+
+export const editReview = (data,id) => ({
+  type:GET_REVIEW_BY_ID,
+  payload:editReviewUser(data,id)
 })

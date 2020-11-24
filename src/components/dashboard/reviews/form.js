@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { addPost, clearPost,getReviewById } from "../../../store/actions/index";
+import { addPost, clearPost,getReviewById,editReview } from "../../../store/actions/index";
 import { toast } from "react-toastify";
 import Uploader from "./uploader";
 
@@ -35,10 +35,11 @@ class PostForm extends Component {
     if(id){
       this.props.dispatch(getReviewById(id)).then(()=>{
         const reviewById = this.props.reviews.reviewById
+        console.log(reviewById.img)
         this.setState({
           mode:'edit',
           editor: reviewById.content,
-          img: reviewById.downloadUrl,
+          img: reviewById.getDownloadURL,
           imgName: reviewById.img,
           initialValues: {
             title: reviewById.title,
@@ -74,10 +75,21 @@ class PostForm extends Component {
       content: this.state.editor,
       img: this.state.imageName,
     };
-
-    this.props.dispatch(addPost(formData, this.props.auth.user)).then(() => {
-      this.handleResetForm(resetForm);
-    });
+    if (this.state.mode ==='add'){
+      this.props.dispatch(addPost(formData, this.props.auth.user)).then(() => {
+        this.handleResetForm(resetForm);
+      });
+    }else{
+      this.props.dispatch(editReview(formData,this.props.id)).then(()=>{
+        this.setState({
+          disable:false
+        })
+        toast.success("Yeah youre post were saved", {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      })
+    }
+ 
   };
 
   handleImageName = (name, download) => {

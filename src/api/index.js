@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/storage"
+import reviews from "../store/reducers/reviews";
 
 import { usersCollection, postsCollection } from "../utils/firebase";
 const serverTimeStamp = firebase.firestore.FieldValue.serverTimestamp;
@@ -154,12 +155,35 @@ export const getReviewByIdUser =async(id) =>{
     
     const snapshot = await postsCollection.doc(id).get();
     const data = snapshot.data();
-
- //   const url = await firebase.storage().ref(`posts/${data.img}`).getDownloadURL()
-
-    return {...data/*, getDownloadURL:url*/}
+    const url = await firebase.storage().ref(`reviews/${data.img}`).getDownloadURL()
+    return {...data, getDownloadURL:url}
 
   }catch(error){
     return null
   }
+}
+
+export const editReviewUser =(data,id) =>(
+  postsCollection.doc(id).update(data).then(()=>{
+  return getReviewByIdUser(id)
+})
+)
+
+export const getFetchedPostsUser =(limit=3,where=null)=>{
+  return new Promise((resolve,reject)=>{
+    let query = postsCollection.where('public','==',1);
+    
+    if(where){
+      query = query.where(where[0],where[1],where[2]);
+    }else{
+      query = query.orderBy('createdAt');
+  }
+  query.limit(limit).get().then(snapshot=>{
+    const post =snapshot.docs.map(doc =>({
+      id:doc.id, ...doc.data()
+    }));
+    //return post
+    resolve(post)
+  })
+});
 }
