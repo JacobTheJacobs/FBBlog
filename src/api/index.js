@@ -154,9 +154,12 @@ export const getReviewByIdUser =async(id) =>{
   try{
     
     const snapshot = await postsCollection.doc(id).get();
+  
     const data = snapshot.data();
+
     const url = await firebase.storage().ref(`reviews/${data.img}`).getDownloadURL()
-    return {...data, getDownloadURL:url}
+  
+    return {...data, downloadURL:url}
 
   }catch(error){
     return null
