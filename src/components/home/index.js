@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { fetchPosts } from "../../store/actions";
 import { Link } from "react-router-dom";
 import CarouselWidget from "../../utils/carousel";
+import { Container, Row, Col } from "react-bootstrap";
+
 class Home extends Component {
   componentDidMount() {
     this.props.dispatch(fetchPosts(6, null));
@@ -10,14 +12,17 @@ class Home extends Component {
 
   renderFeaturePosts = () =>
     this.props.reviews.posts
+    
       ? this.props.reviews.posts.map((item, i) => (
-          <div key={i} className="card col" style={{ width: "28rem",margin:"10px" }}>
+          <Col xs={12} sm={4} md={3} lg={2} key={i} className="card col" style={{ width: "38rem",margin:"10px" }}>
+           <div>
             <div className="card-body">
-              <h6 className="alert alert-primary">{item.title}</h6>
-              <p className="card-text">{item.excerpt}</p>
-              <Link to={`/reviews/${item.id}`}>Read More</Link>
+              <h5 style={{height:'100px'}} className="alert alert-primary"><strong>{item.title}</strong></h5>
+              <p style={{height:'70px'}} className="card-text blockquote text-center">{item.excerpt}</p>
+              <Link className="blockquote text-right blockquote-footer" to={`/reviews/${item.id}`}>Read More</Link>
             </div>
-          </div>
+           </div>
+          </Col >
         ))
       : null;
 
@@ -28,12 +33,11 @@ class Home extends Component {
       <CarouselWidget />
       </div>
        
-        <div className="container">
-   
-            <div className="row">{this.renderFeaturePosts()}
-
-          </div> 
-        </div>
+      <Container>
+          <Row style={{justifyContent:'center'}}>
+           {this.renderFeaturePosts()}
+          </Row>
+      </Container>
       </>
     );
   }

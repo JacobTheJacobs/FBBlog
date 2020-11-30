@@ -181,12 +181,22 @@ export const getFetchedPostsUser =(limit=3,where=null)=>{
     }else{
       query = query.orderBy('createdAt');
   }
+  console.log(limit)
   query.limit(limit).get().then(snapshot=>{
     const post =snapshot.docs.map(doc =>({
       id:doc.id, ...doc.data()
     }));
+    console.log(post)
     //return post
     resolve(post)
   })
 });
 }
+
+export const deletePostUser =(postId) =>(
+  postsCollection.doc(postId).delete().then(()=>{
+    console.log(postId)
+  return ;
+})
+)
+

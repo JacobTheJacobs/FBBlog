@@ -19,7 +19,7 @@ const Header = (props) => {
             </Link>
             {isAuth ? (
               <>
-                <Link className="mt-4 header_btn" to="/dashboard">
+                <Link className="mt-4 header_btn" to="/dashboard/posts">
                   Dashboard
                 </Link>
                 <div onClick={props.logout} className="mt-4 header_btn">

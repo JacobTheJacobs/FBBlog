@@ -9,13 +9,7 @@ const Layout = (props) => {
         <div className="row">
           <nav className="col-md-2 d-none d-md-block bg-light sidebar">
             <div className="sidebar-sticky">
-              <ul className="nav flex-column">
-                <li className="nav-item">
-                  <Link className="nav-link active" to="/dashboard">
-                    Dashboard
-                  </Link>
-                </li>
-              </ul>
+
               <ul className="nav flex-column">
                 <li className="nav-item">
                   <Link className="nav-link active" to="/dashboard/profile">
@@ -34,13 +28,7 @@ const Layout = (props) => {
                       </Link>
                     </li>
                   </ul>
-                  <ul className="nav flex-column">
-                    <li className="nav-item">
-                      <Link className="nav-link active" to="/dashboard/messages">
-                        Messages
-                      </Link>
-                    </li>
-                  </ul>
+             
                 </>
               ) : null}
             </div>

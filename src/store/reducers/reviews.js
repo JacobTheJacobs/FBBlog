@@ -1,4 +1,4 @@
-import { ADD_POST, CLEAR_POST, GET_REVIEWS ,GET_REVIEW_BY_ID,FETCH_POSTS} from "../types";
+import { ADD_POST, CLEAR_POST, GET_REVIEWS,DELETE_POST ,GET_REVIEW_BY_ID,FETCH_POSTS} from "../types";
 
 export default function (state = {}, action) {
   switch (action.type) {
@@ -11,6 +11,8 @@ export default function (state = {}, action) {
       case GET_REVIEW_BY_ID:
         return {...state,reviewById:action.payload}
     case FETCH_POSTS:
+      return {...state,posts:action.payload}
+      case DELETE_POST:
       return {...state,posts:action.payload}
     default:
       return state;

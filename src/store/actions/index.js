@@ -6,6 +6,7 @@ import {
   GET_REVIEWS,
   GET_REVIEW_BY_ID,
   FETCH_POSTS,
+  DELETE_POST
 } from "../types";
 import {
   registerUser,
@@ -18,7 +19,8 @@ import {
   loadMoreReviewsUser,
   getReviewByIdUser,
   editReviewUser,
-  getFetchedPostsUser
+  getFetchedPostsUser,
+  deletePostUser
 } from "../../api/index";
 
 //=======AUTH
@@ -53,8 +55,6 @@ export const fetchPosts =(id,condition)=>({
   payload:getFetchedPostsUser(id,condition)
 
 })
-
-
 export const addPost = (data, user) => ({
   type: ADD_POST,
   payload: addPostUser(data, user),
@@ -64,6 +64,11 @@ export const clearPost = () => ({
   type: CLEAR_POST,
   payload: null,
 });
+
+export const deletePost =(postId)=>({
+  type:DELETE_POST,
+  payload:deletePostUser(postId),
+})
 
 export const getReviews = (limit) => ({
   type: GET_REVIEWS,

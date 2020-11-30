@@ -5,3 +5,4 @@ export const CLEAR_POST = "CLEAR_POST";
 export const GET_REVIEWS = "GET_REVIEWS";
 export const GET_REVIEW_BY_ID = "GET_REVIEW_BY_ID"
 export const FETCH_POSTS = "FETCH_POSTS";
+export const DELETE_POST = "DELETE_POST";
