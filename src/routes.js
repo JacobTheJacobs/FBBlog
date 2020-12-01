@@ -14,6 +14,7 @@ import Reviews from "./components/dashboard/reviews";
 import Profile from "./components/dashboard/profile";
 import AddEditPost from "./components/dashboard/reviews/add_edit";
 import Review from "./components/posts";
+import NotFoundPage from "./components/HOC/404";
 
 class Routes extends Component {
   componentDidMount() {
@@ -38,6 +39,7 @@ class Routes extends Component {
         <Route path="/contact" component={Contact} />
         <Route path="/reviews/:id" component={Review} />
         <Route path="/" component={Home} />
+        <Route path="**" component={NotFoundPage} />
       </Switch>
       <Footer />
       <ToastsComponent />
