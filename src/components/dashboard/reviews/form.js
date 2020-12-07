@@ -5,13 +5,18 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { addPost, clearPost,getReviewById,editReview } from "../../../store/actions/index";
+import {
+  addPost,
+  clearPost,
+  getReviewById,
+  editReview,
+} from "../../../store/actions/index";
 import { toast } from "react-toastify";
 import Uploader from "./uploader";
 
 class PostForm extends Component {
   state = {
-    mode:'add',
+    mode: "add",
     editor: "",
     editorError: false,
     disable: false,
@@ -30,29 +35,31 @@ class PostForm extends Component {
     this.props.dispatch(clearPost());
   }
 
-  componentDidMount(){
-    const id = this.props.id
-    if(id){
-      this.props.dispatch(getReviewById(id)).then(()=>{
-        const reviewById = this.props.reviews.reviewById
-        console.log(reviewById.img)
-        this.setState({
-          mode:'edit',
-          editor: reviewById.content,
-          img: reviewById.getDownloadURL,
-          imgName: reviewById.img,
-          initialValues: {
-            title: reviewById.title,
-            excerpt: reviewById.excerpt,
-            rating: reviewById.rating,
-            public: reviewById.public,
-          },
+  componentDidMount() {
+    const id = this.props.id;
+    if (id) {
+      this.props
+        .dispatch(getReviewById(id))
+        .then(() => {
+          const reviewById = this.props.reviews.reviewById;
+
+          this.setState({
+            mode: "edit",
+            editor: reviewById.content,
+            img: reviewById.getDownloadURL,
+            imgName: reviewById.img,
+            initialValues: {
+              title: reviewById.title,
+              excerpt: reviewById.excerpt,
+              rating: reviewById.rating,
+              public: reviewById.public,
+            },
+          });
         })
-      }).catch((e)=>{
-        this.props.history.push('/dashboard/posts')
-        toast.error('Sorry, the posts does not exists')
-        console.log(e);
-      })
+        .catch((e) => {
+          this.props.history.push("/dashboard/posts");
+          toast.error("Sorry, the posts does not exists");
+        });
     }
   }
 
@@ -75,21 +82,20 @@ class PostForm extends Component {
       content: this.state.editor,
       img: this.state.imageName,
     };
-    if (this.state.mode ==='add'){
+    if (this.state.mode === "add") {
       this.props.dispatch(addPost(formData, this.props.auth.user)).then(() => {
         this.handleResetForm(resetForm);
       });
-    }else{
-      this.props.dispatch(editReview(formData,this.props.id)).then(()=>{
+    } else {
+      this.props.dispatch(editReview(formData, this.props.id)).then(() => {
         this.setState({
-          disable:false
-        })
+          disable: false,
+        });
         toast.success("Yeah youre post were saved", {
           position: toast.POSITION.TOP_LEFT,
         });
-      })
+      });
     }
- 
   };
 
   handleImageName = (name, download) => {
@@ -126,7 +132,6 @@ class PostForm extends Component {
             });
             this.handleSubmit(values, resetForm);
           }
-          console.log(values);
         }}
       >
         {({ values, errors, touched, handleChange, handleSubmit }) => (

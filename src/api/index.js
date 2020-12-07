@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import "firebase/storage"
+import "firebase/storage";
 import reviews from "../store/reducers/reviews";
 
 import { usersCollection, postsCollection } from "../utils/firebase";
@@ -107,7 +107,7 @@ export const addPostUser = (data, user) =>
       return docRef.id;
     });
 
-export const getPostsUser = (limit) => 
+export const getPostsUser = (limit) =>
   postsCollection
     .orderBy("createdAt")
     .limit(limit)
@@ -118,85 +118,90 @@ export const getPostsUser = (limit) =>
         id: doc.id,
         ...doc.data(),
       }));
-      console.log(reviews);
 
       return { posts: reviews, lastVisible: lastVisible };
     });
-   
 
 export const loadMoreReviewsUser = (limit, reviews) => {
   let posts = [...reviews.posts];
   let lastVisible = reviews.lastVisible;
 
-  if(lastVisible){
-    return postsCollection  
-    .orderBy("createdAt")
-    //last post
-    .startAfter(lastVisible)
-    .limit(limit)
-    .get()
-    .then( snapshot => {
-      const lastVisible = snapshot.docs[snapshot.docs.length-1];
-      const newReviews =snapshot.docs.map(doc =>({
-        id:doc.id, ...doc.data()
-      }))
-      return { posts: [...posts, ...newReviews], lastVisible: lastVisible };
-    })
-  }else{
-    console.log('no more posts')
-    return {posts,lastVisible}
+  if (lastVisible) {
+    return (
+      postsCollection
+        .orderBy("createdAt")
+        //last post
+        .startAfter(lastVisible)
+        .limit(limit)
+        .get()
+        .then((snapshot) => {
+          const lastVisible = snapshot.docs[snapshot.docs.length - 1];
+          const newReviews = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          return { posts: [...posts, ...newReviews], lastVisible: lastVisible };
+        })
+    );
+  } else {
+    return { posts, lastVisible };
   }
+};
 
-}
-
-export const getReviewByIdUser =async(id) =>{
-
-  try{
-    
+export const getReviewByIdUser = async (id) => {
+  try {
     const snapshot = await postsCollection.doc(id).get();
-  
+
     const data = snapshot.data();
 
-    const url = await firebase.storage().ref(`reviews/${data.img}`).getDownloadURL()
-  
-    return {...data, downloadURL:url}
+    const url = await firebase
+      .storage()
+      .ref(`reviews/${data.img}`)
+      .getDownloadURL();
 
-  }catch(error){
-    return null
+    return { ...data, downloadURL: url };
+  } catch (error) {
+    return null;
   }
-}
+};
 
-export const editReviewUser =(data,id) =>(
-  postsCollection.doc(id).update(data).then(()=>{
-  return getReviewByIdUser(id)
-})
-)
+export const editReviewUser = (data, id) =>
+  postsCollection
+    .doc(id)
+    .update(data)
+    .then(() => {
+      return getReviewByIdUser(id);
+    });
 
-export const getFetchedPostsUser =(limit=3,where=null)=>{
-  return new Promise((resolve,reject)=>{
-    let query = postsCollection.where('public','==',1);
-    
-    if(where){
-      query = query.where(where[0],where[1],where[2]);
-    }else{
-      query = query.orderBy('createdAt');
-  }
-  console.log(limit)
-  query.limit(limit).get().then(snapshot=>{
-    const post =snapshot.docs.map(doc =>({
-      id:doc.id, ...doc.data()
-    }));
-    console.log(post)
-    //return post
-    resolve(post)
-  })
-});
-}
+export const getFetchedPostsUser = (limit = 3, where = null) => {
+  return new Promise((resolve, reject) => {
+    let query = postsCollection.where("public", "==", 1);
 
-export const deletePostUser =(postId) =>(
-  postsCollection.doc(postId).delete().then(()=>{
-    console.log(postId)
-  return ;
-})
-)
+    if (where) {
+      query = query.where(where[0], where[1], where[2]);
+    } else {
+      query = query.orderBy("createdAt");
+    }
 
+    query
+      .limit(limit)
+      .get()
+      .then((snapshot) => {
+        const post = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        //return post
+        resolve(post);
+      });
+  });
+};
+
+export const deletePostUser = (postId) =>
+  postsCollection
+    .doc(postId)
+    .delete()
+    .then(() => {
+      return;
+    });

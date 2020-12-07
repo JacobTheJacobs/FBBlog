@@ -44,7 +44,6 @@ class Login extends Component {
         .dispatch(register(formData))
         .then(({ payload }) => this.handleRedirection(payload));
     } else {
-      console.log(formData);
       this.props
         .dispatch(login(formData))
         .then(({ payload }) => this.handleRedirection(payload));

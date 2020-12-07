@@ -3,7 +3,15 @@ import { connect } from "react-redux";
 import { fetchPosts } from "../../store/actions";
 import { Link } from "react-router-dom";
 import CarouselWidget from "../../utils/carousel";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  ListGroupItem,
+  ListGroup,
+  Header,
+} from "react-bootstrap";
 
 class Home extends Component {
   componentDidMount() {
@@ -22,36 +30,35 @@ class Home extends Component {
             className="card col"
             style={{ margin: "10px", padding: "0px" }}
           >
-            <div>
-              <div className="card-body">
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <div className="alert alert-primary">
-                    <h4 style={{ height: "80px" }}>
-                      <strong>{item.title}</strong>
-                    </h4>
+            <Card>
+              <div>
+                <div className="card-body">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      height: "80px",
+                    }}
+                  >
+                    <Card.Header as="h4">{item.title}</Card.Header>
                   </div>
-                </div>
 
-                <p
-                  style={{ height: "70px" }}
-                  className="card-text blockquote text-center"
-                >
-                  {item.excerpt}
-                </p>
-                <Link
-                  className="btn btn-outline-danger btn-lg btn-block"
-                  to={`/reviews/${item.id}`}
-                >
-                  Read More
-                </Link>
+                  <p
+                    style={{ height: "70px" }}
+                    className="card-text blockquote text-center"
+                  >
+                    {item.excerpt}
+                  </p>
+                  <Link
+                    className="btn btn-outline-danger btn-lg btn-block"
+                    to={`/reviews/${item.id}`}
+                  >
+                    Read More
+                  </Link>
+                </div>
               </div>
-            </div>
+            </Card>
           </Col>
         ))
       : null;
@@ -60,11 +67,9 @@ class Home extends Component {
     return (
       <>
         <br></br>
-        <div>
-          <CarouselWidget />
-        </div>
-        <br></br>
 
+        <br></br>
+        <h1 style={{ textAlign: "center" }}>My Projects</h1>
         <Container>
           <div
             className="card"

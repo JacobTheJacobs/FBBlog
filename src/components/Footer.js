@@ -4,15 +4,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   let newDate = new Date();
   return (
-    <div
-      style={{
-        backgroundImage:
-          'url("https://img.freepik.com/free-photo/distressed-yellow-wall-texture-background_1017-18217.jpg?size=626&ext=jpg")',
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-      }}
-    >
+    <div>
       <footer className="pt-4  pt-md-5 border-top">
         <div className="container">
           <div className="row">

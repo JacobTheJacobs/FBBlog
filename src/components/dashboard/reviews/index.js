@@ -2,28 +2,28 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Layout from "../../../utils/layout";
 import { Link } from "react-router-dom";
-import { getReviews, loadMoreReviews ,deletePost} from "../../../store/actions";
+import {
+  getReviews,
+  loadMoreReviews,
+  deletePost,
+} from "../../../store/actions";
 
 const Reviews = (props) => {
   const reviews = useSelector((state) => state.reviews);
   const dispatch = useDispatch();
- 
 
   useEffect(() => {
-    if(!reviews.adminReviews){
-      dispatch(getReviews(2))
+    if (!reviews.adminReviews) {
+      dispatch(getReviews(2));
     }
     dispatch(getReviews(6));
   }, [dispatch]);
 
-  const deleteThisPost =(postId)=>{
-    dispatch(deletePost(postId))
+  const deleteThisPost = (postId) => {
+    dispatch(deletePost(postId));
     //window.location.reload();
-    setTimeout(
-      () => window.location.reload(), 
-      2000
-    );
-  }
+    setTimeout(() => window.location.reload(), 2000);
+  };
 
   const renderPosts = () =>
     reviews.adminReviews
@@ -35,7 +35,18 @@ const Reviews = (props) => {
             <td>{post.ownerData.name}</td>
             <td>{post.public === 1 ? "Public" : "Draft"}</td>
             <td>
-              <div style={{cursor:'pointer'}} className="table-link-red" onClick={() => { if (window.confirm('Are you sure you wish to delete this item?')) deleteThisPost(post.id) } }>Delete</div>
+              <div
+                style={{ cursor: "pointer" }}
+                className="table-link-red"
+                onClick={() => {
+                  if (
+                    window.confirm("Are you sure you wish to delete this item?")
+                  )
+                    deleteThisPost(post.id);
+                }}
+              >
+                Delete
+              </div>
             </td>
             <td>
               <Link className="table-link" to={`posts/edit/${post.id}`}>
@@ -48,7 +59,6 @@ const Reviews = (props) => {
 
   const loadMore = () => {
     dispatch(loadMoreReviews(1, reviews.adminReviews));
-    console.log(reviews);
   };
   return (
     <Layout auth={props.auth} title="Posts">
